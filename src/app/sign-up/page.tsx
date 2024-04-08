@@ -9,13 +9,17 @@ export default function Page() {
                         <input id="id" name="id" type="text" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" />
                     </div>
                     <div>
+                        <label htmlFor="password" className="block text-sm font-medium text-gray-700">Name</label>
+                        <input id="name" name="name" type="text" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" />
+                    </div>
+                    <div>
                         <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
                         <input id="password" name="password" type="password" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" />
                     </div>
                     <div className="flex justify-between items-center">
-                        <button type="submit" className="w-9/12 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">로그인</button>
-                        <Link href={'/sign-up'}>
-                        <button type="button" className="text-blue-500 hover:underline">회원가입</button>
+                        <button type="submit" className="w-9/12 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">회원가입</button>
+                        <Link href={'/'}>
+                        <button type="button" className="text-blue-500 hover:underline">취소</button>
                         </Link>
                     </div>
                 </form>
