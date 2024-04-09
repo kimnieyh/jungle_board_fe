@@ -23,15 +23,18 @@ export default function Page() {
 
         try{
             const response = await axios
-                .post('/api/mysql/member', formData)
+                .post('/api/mysql/sign-up', formData)
                 .then((res)=> {
-                    alert('회원가입이 완료되었습니다.');
-                    router.push('/');
+                    if("affectedRows" in res.data){
+                        alert('회원가입이 완료되었습니다.');
+                        router.push('/');
+                    }else{
+                        alert('중복된 아이디 입니다.');
+                    }
+                    console.log(res);
                 });
-
         }catch (e){
             console.error('Error:',e);
-
         }
     }
 
