@@ -1,9 +1,12 @@
 'use client'
 import Link from 'next/link'
-import {ChangeEvent, FormEvent, useState} from "react";
+import {ChangeEvent, FormEvent, useEffect, useState} from "react";
 import axios from 'axios';
+import {useRouter} from "next/navigation";
 
 export default function Page() {
+    const router = useRouter();
+
     const [formData, setFormData] = useState({
         user_id: '',
         name: '',
@@ -19,8 +22,13 @@ export default function Page() {
         e.preventDefault();
 
         try{
-            const response = await axios.post('/api/mysql/member', formData);
-            console.log(response.data);
+            const response = await axios
+                .post('/api/mysql/member', formData)
+                .then((res)=> {
+                    alert('회원가입이 완료되었습니다.');
+                    router.push('/');
+                });
+
         }catch (e){
             console.error('Error:',e);
 

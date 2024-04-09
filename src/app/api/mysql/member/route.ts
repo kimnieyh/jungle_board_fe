@@ -3,6 +3,7 @@ import { NextResponse, NextRequest } from "next/server";
 import mysql from 'mysql2/promise';
 
 import {GetDBSettings, IDBSettings} from "@/common";
+import {redirect} from "next/navigation";
 
 // 1. populate the connection parameters
 let connectionParams = GetDBSettings();
@@ -35,6 +36,20 @@ function validateError () {
     return NextResponse.json(response,{status : 200});
 }
 
+async function checkDuplicateId(id :string){
+    try {
+        const result = await executeQuery(
+            "SELECT * FROM jungle_board.member WHERE user_id = ? ",[id,]);
+        return !(Array.isArray(result) && result.length === 0);
+    }catch (e){
+        const response = {
+            error: (e as Error).message,
+            returnedStatus: 200,
+        }
+        return NextResponse.json(response,{status : 200});
+    }
+}
+
 export async function GET(request : Request) {
     try {
 
@@ -58,7 +73,7 @@ export async function POST(request: Request) {
     const userId = reqData.user_id;
     const password = reqData.password;
 
-    if(name == null || userId == null || password == null ){
+    if(name == null || userId == null || password == null || await checkDuplicateId(userId) ){
         return validateError();
     }
 
@@ -66,7 +81,11 @@ export async function POST(request: Request) {
         const results = await executeQuery
         ("INSERT INTO member (name,user_id,password) VALUES (?, ?, ?)",
             [name,userId,password]);
-
+        //
+        // console.log('results:',results);
+        // if("affectedRows" in results && results.affectedRows == 1){
+        //
+        // }
         return NextResponse.json(results);
     }catch (e) {
         const response = {
