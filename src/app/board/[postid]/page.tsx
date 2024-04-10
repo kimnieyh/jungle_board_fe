@@ -49,6 +49,23 @@ function PostView({params}:{params:{postid:string}}) {
         router.push('/');
     }
 
+    const removeComment = async (comment_id : string) =>{
+        setSubmitted(false);
+        try {
+            const response = await axios
+                .delete('/api/mysql/post',{
+                    data : {
+                        commentId: comment_id
+                    }
+                })
+                .then((res) => {
+                    setSubmitted(true);
+                })
+        }catch (e) {
+            console.error('Error:',e);
+        }
+    }
+
     const handleChange = (e: ChangeEvent<HTMLInputElement>) =>{
         setInputValue(e.target.value);
         const {name,value} = e.target;
@@ -179,10 +196,10 @@ function PostView({params}:{params:{postid:string}}) {
                                                             </Menu.Item>
                                                             <Menu.Item>
                                                                 {({active})=>(
-                                                                    <p className={classNames(
+                                                                    <button onClick={() => removeComment(comment_id)} className={classNames(
                                                                         active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                                                                         'block px-4 py-2 text-sm'
-                                                                    )}>삭제</p>
+                                                                    )}>삭제</button>
                                                                 )}
                                                             </Menu.Item>
                                                         </Menu.Items>
