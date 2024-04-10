@@ -23,7 +23,7 @@ function NewPost(){
                 </div>
             </header>
             <div className="bg-white p-8 rounded-lg shadow-md w-full">
-                <div>
+                <form>
                     <label htmlFor="title" className="block mb-2 text-sm font-bold text-gray-900 dark:text-white">
                         새 글 작성</label>
                     <input
@@ -34,14 +34,13 @@ function NewPost(){
                         placeholder="제목을 입력해 주세요"
                     />
 
-                <textarea id="message"
-                          className="resize-none h-56 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                          placeholder="내용을 입력해 주세요"></textarea>
+                    <textarea id="content" name="content"
+                              className="resize-none h-56 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              placeholder="내용을 입력해 주세요"></textarea>
                     <div className="text-end">
-                        <button className="rounded-full bg-blue-500 h-12 w-20 text-white font-bold mt-3">저장</button>
+                        <button type="submit" className="rounded-full bg-blue-500 h-12 w-20 text-white font-bold mt-3">저장</button>
                     </div>
-
-                </div>
+                </form>
             </div>
         </main>
     );

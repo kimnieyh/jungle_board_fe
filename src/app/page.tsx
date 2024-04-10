@@ -26,6 +26,8 @@ export default function Page() {
                     if("message" in res.data){
                         alert(res.data.message);
                     }else {
+                        console.log(res.data[0].id);
+                        sessionStorage.setItem('id',res.data[0].id);
                         router.push('/board')
                     }
                     console.log(res);

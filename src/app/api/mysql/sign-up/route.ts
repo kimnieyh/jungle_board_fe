@@ -18,11 +18,7 @@ export async function POST(request: Request) {
         const results = await executeQuery
         ("INSERT INTO member (name,user_id,password) VALUES (?, ?, ?)",
             [name,userId,password]);
-        //
-        // console.log('results:',results);
-        // if("affectedRows" in results && results.affectedRows == 1){
-        //
-        // }
+
         return NextResponse.json(results);
     }catch (e) {
         const response = {

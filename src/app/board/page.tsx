@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from "next/navigation";
-import { throws } from "assert";
 
 function PostList() {
     const router = useRouter();
@@ -31,8 +30,6 @@ function PostList() {
         router.push('/');
     }
 
-    // @ts-ignore
-    // @ts-ignore
     return (
         <main className="flex flex-col items-center min-h-screen p-24 mt-0">
             <header className="w-full mb-8">
@@ -51,15 +48,11 @@ function PostList() {
                 {loading ? (
                     <p>Loading...</p>
                 ) : (
-                    <table className="table-auto w-full">
+                    <>
                         {Array.isArray(posts) && posts.length === 0 ? (
-                            <tbody>
-                            <tr>
-                                <td>글 목록이 비어 있습니다.</td>
-                            </tr>
-                            </tbody>
+                            <p>글 목록이 비어 있습니다.</p>
                         ) : (
-                            <>
+                            <table className="table-auto w-full">
                                 <thead>
                                 <tr className="border-b text-lg font-bold mb-4">
                                     <th>제목</th>
@@ -74,17 +67,15 @@ function PostList() {
                                                 <div className="text-blue-500 hover:underline m-4">{title}</div>
                                             </Link>
                                         </td>
-                                        <td className="text-center">작성자</td> {/* post에 작성자 정보가 있다면 post.author 로 수정*/}
-                                    </tr>
-                                ))}
+                                        <td className="text-center">작성자</td>
+                                    </tr>))}
                                 </tbody>
-                            </>
+                            </table>
                         )}
-                    </table>
+                    </>
                 )}
             </div>
         </main>
-
     );
 }
 
