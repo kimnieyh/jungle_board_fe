@@ -4,7 +4,7 @@ import {executeQuery} from "@/common";
 export async function GET() {
     try {
         const results = await executeQuery(
-            "select * from post join member on post.author_id = member.id ", []);
+            "select member.name as member, post.id as id, post.title as title, post.content as content from post join member on post.author_id = member.id ", []);
 
         console.log('post list : ',results);
 
