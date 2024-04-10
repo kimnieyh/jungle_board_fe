@@ -25,6 +25,7 @@ function PostView({params}:{params:{postid:string}}) {
         author: sessionStorage.getItem('id'),
         postId: params.postid,
     });
+    const [heart,heartChange] = useState(false);
     const [submitted, setSubmitted] = useState(false);
     const [inputValue, setInputValue] = useState('');
 // todo useRef : form data input data 같은 경우에!!
@@ -42,13 +43,12 @@ function PostView({params}:{params:{postid:string}}) {
             }
         }
         fetchData();
-    },[submitted]);
+    },[submitted,heart]);
 
     function logout() {
         sessionStorage.setItem('id','');
         router.push('/');
     }
-
     const removeComment = async (comment_id : string) =>{
         setSubmitted(false);
         try {
@@ -124,14 +124,26 @@ function PostView({params}:{params:{postid:string}}) {
                     <>
                         <div
                             id="title"
-                            className="mb-2 block w-full rounded-md border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6">
+                            className="mb-2 block w-full border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6">
                             {post[0].title}
                         </div>
 
                         <div id="content"
-                             className="resize-none h-56 pl-4 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                             className="resize-none h-56 pl-4 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             {post[0].content}</div>
-
+                        <div className="w-full h-8 pt-3 pl-4 flex">
+                            {heart?(<button onClick={()=>heartChange(false)}>
+                                <svg fill="#ff0707" viewBox="0 0 122 122" width="24" height="24">
+                                    <path xmlns="http://www.w3.org/2000/svg" d="M 65,29 C 59,19 49,12 37,12 20,12 7,25 7,42 7,75 25,80 65,118 105,80 123,75 123,42 123,25 110,12 93,12 81,12 71,19 65,29 z"/>
+                                </svg>
+                            </button>):(<button onClick={()=>heartChange(true)}>
+                                <svg aria-label="좋아요" className="love hover:animate-bounce" color="#262626" fill="#262626" height="24" role="img"
+                                     viewBox="0 0 24 24" width="24">
+                                    <path
+                                        d="M16.792 3.904A4.989 4.989 0 0121.5 9.122c0 3.072-2.652 4.959-5.197 7.222-2.512 2.243-3.865 3.469-4.303 3.752-.477-.309-2.143-1.823-4.303-3.752C5.141 14.072 2.5 12.167 2.5 9.122a4.989 4.989 0 014.708-5.218 4.21 4.21 0 013.675 1.941c.84 1.175.98 1.763 1.12 1.763s.278-.588 1.11-1.766a4.17 4.17 0 013.679-1.938m0-2a6.04 6.04 0 00-4.797 2.127 6.052 6.052 0 00-4.787-2.127A6.985 6.985 0 00.5 9.122c0 3.61 2.55 5.827 5.015 7.97.283.246.569.494.853.747l1.027.918a44.998 44.998 0 003.518 3.018 2 2 0 002.174 0 45.263 45.263 0 003.626-3.115l.922-.824c.293-.26.59-.519.885-.774 2.334-2.025 4.98-4.32 4.98-7.94a6.985 6.985 0 00-6.708-7.218z"></path>
+                                </svg>
+                            </button>)}
+                        </div>
 
                         <form onSubmit={handleSubmit}>
                         <div className="flex h-8 mb-6">
