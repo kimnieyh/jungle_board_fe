@@ -133,8 +133,8 @@ function PostView({params}:{params:{postid:string}}) {
                             >작성</button>
                         </div>
                         </form>
-                        {Array.isArray(post) && post.length === 0 ? (
-                            <p>글 목록이 비어 있습니다.</p>
+                        {(Array.isArray(post) && post.length === 0) || post[0].comment === null ? (
+                            <></>
                         ) : (
                             <table className="table-auto w-full">
                                 <tbody>
