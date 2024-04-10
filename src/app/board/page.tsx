@@ -31,6 +31,8 @@ function PostList() {
         router.push('/');
     }
 
+    // @ts-ignore
+    // @ts-ignore
     return (
         <main className="flex flex-col items-center min-h-screen p-24 mt-0">
             <header className="w-full mb-8">
@@ -46,26 +48,43 @@ function PostList() {
                 </div>
             </header>
             <div className="bg-white p-8 rounded-lg shadow-md w-full">
-                <h1 className="text-lg font-bold mb-4">글 목록</h1>
                 {loading ? (
                     <p>Loading...</p>
                 ) : (
-                    (Array.isArray(posts) && posts.length == 0) ? (
-                        <p>글 목록이 비어 있습니다.</p>
-                    ) : (
-                        <ul className="space-y-2">
-                            {posts.map(post => (
-                                <li key={post.id}>
-                                    <Link href={`/board/${post.id}`}>
-                                        <div className="text-blue-500 hover:underline">{post.title}</div>
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    )
+                    <table className="table-auto w-full">
+                        {Array.isArray(posts) && posts.length === 0 ? (
+                            <tbody>
+                            <tr>
+                                <td>글 목록이 비어 있습니다.</td>
+                            </tr>
+                            </tbody>
+                        ) : (
+                            <>
+                                <thead>
+                                <tr className="border-b text-lg font-bold mb-4">
+                                    <th>제목</th>
+                                    <th>글쓴이</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {posts.map(({id, title}) => (
+                                    <tr key={id} className="border-b w-full space-y-2 ">
+                                        <td>
+                                            <Link href={`/board/${id}`}>
+                                                <div className="text-blue-500 hover:underline m-4">{title}</div>
+                                            </Link>
+                                        </td>
+                                        <td className="text-center">작성자</td> {/* post에 작성자 정보가 있다면 post.author 로 수정*/}
+                                    </tr>
+                                ))}
+                                </tbody>
+                            </>
+                        )}
+                    </table>
                 )}
             </div>
         </main>
+
     );
 }
 
