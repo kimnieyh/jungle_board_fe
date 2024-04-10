@@ -38,7 +38,7 @@ function PostList() {
             <header className="w-full mb-8">
                 <div className="flex justify-between items-center py-4 px-8 bg-blue-500 text-white">
                     <div>
-                        <Link href="/new-post">
+                        <Link href="/board/new-post">
                             <div className="text-lg font-bold hover:underline">글 작성</div>
                         </Link>
                     </div>
