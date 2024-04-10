@@ -26,7 +26,7 @@ function PostList() {
     }, []);
 
     function logout() {
-        //todo 로그아웃 구현 필요
+        sessionStorage.setItem('id','');
         router.push('/');
     }
 

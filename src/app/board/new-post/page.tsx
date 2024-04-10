@@ -1,13 +1,49 @@
 'use client'
 import Link from "next/link";
 import {useRouter} from "next/navigation";
+import {ChangeEvent, FormEvent, useState} from "react";
+import axios from "axios";
 
 function NewPost(){
     const router = useRouter();
     function logout() {
-        //todo 로그아웃 구현 필요
+        sessionStorage.setItem('id','');
         router.push('/');
     }
+    const [formData, setFormData] = useState({
+        title: '',
+        content: '',
+        author: sessionStorage.getItem('id'),
+    });
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const {name,value} = e.target;
+        setFormData({...formData, [name]: value});
+    };
+    const handleTextAreaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        const {name,value} = e.target;
+        setFormData({...formData, [name]: value});
+    };
+
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        try{
+            const response = await axios
+                .post('/api/mysql/posts', formData)
+                .then((res)=> {
+                    if("affectedRows" in res.data){
+                        alert('작성 완료');
+                        router.push('/board');
+                    }else{
+                        alert('작성 오류');
+                    }
+                    console.log(res);
+                });
+        }catch (e){
+            console.error('Error:',e);
+        }
+    }
+
     return(
         <main className="flex flex-col items-center min-h-screen p-24 mt-0">
             <header className="w-full mb-8">
@@ -23,10 +59,11 @@ function NewPost(){
                 </div>
             </header>
             <div className="bg-white p-8 rounded-lg shadow-md w-full">
-                <form>
+                <form onSubmit={handleSubmit}>
                     <label htmlFor="title" className="block mb-2 text-sm font-bold text-gray-900 dark:text-white">
                         새 글 작성</label>
                     <input
+                        onChange={handleChange}
                         type="text"
                         name="title"
                         id="title"
@@ -34,7 +71,7 @@ function NewPost(){
                         placeholder="제목을 입력해 주세요"
                     />
 
-                    <textarea id="content" name="content"
+                    <textarea onChange={handleTextAreaChange} id="content" name="content"
                               className="resize-none h-56 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                               placeholder="내용을 입력해 주세요"></textarea>
                     <div className="text-end">
