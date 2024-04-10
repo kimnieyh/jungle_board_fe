@@ -60,14 +60,14 @@ function PostList() {
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {posts.map(({id, title}) => (
+                                {posts.map(({id, title,name}) => (
                                     <tr key={id} className="border-b w-full space-y-2 ">
                                         <td>
                                             <Link href={`/board/${id}`}>
                                                 <div className="text-blue-500 hover:underline m-4">{title}</div>
                                             </Link>
                                         </td>
-                                        <td className="text-center">작성자</td>
+                                        <td className="text-center">{name}</td>
                                     </tr>))}
                                 </tbody>
                             </table>
