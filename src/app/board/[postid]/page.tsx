@@ -4,7 +4,13 @@ import {useRouter} from "next/navigation";
 import Link from "next/link";
 import {ChangeEvent, FormEvent, useEffect, useState} from "react";
 import axios from "axios";
-
+import { Fragment } from 'react'
+import { Menu, Transition } from '@headlessui/react'
+import { ChevronDownIcon } from '@heroicons/react/20/solid'
+// @ts-ignore
+function classNames(...classes) {
+    return classes.filter(Boolean).join(' ')
+}
 function PostView({params}:{params:{postid:string}}) {
     const router = useRouter();
     const [post,setPost] = useState([{
@@ -21,7 +27,7 @@ function PostView({params}:{params:{postid:string}}) {
     });
     const [submitted, setSubmitted] = useState(false);
     const [inputValue, setInputValue] = useState('');
-
+// todo useRef : form data input data 같은 경우에!!
     const [loading, setLoading] = useState(true);
     useEffect(() => {
         async function fetchData(){
@@ -51,7 +57,7 @@ function PostView({params}:{params:{postid:string}}) {
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log("submit!!!");
+        setSubmitted(false);
         try {
             const response = await axios
                 .post('/api/mysql/post',formData)
@@ -135,9 +141,60 @@ function PostView({params}:{params:{postid:string}}) {
                                 {post.map(({comment_id,comment,author}) => (
                                     <tr key={comment_id} className="border-b w-full space-y-2 ">
                                         <td>
-                                            <div className="m-4">{comment}</div>
+                                            <div className="m-4">
+                                                <div className="flex">
+                                                    <div className="font-bold w-full">
+                                                        {author}
+                                                    </div>
+                                                    <Menu as="div" className="relative inline-block text-left">
+                                                    <Menu.Button type="button" id="menu-button" aria-expanded="true" aria-haspopup="true">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="h-5 w-5 text-gray-400">
+                                                            <circle cx="12" cy="6" r="1.5" />
+                                                            <circle cx="12" cy="12" r="1.5" />
+                                                            <circle cx="12" cy="18" r="1.5" />
+                                                        </svg>
+                                                    </Menu.Button>
+                                                    <Transition
+                                                        as={Fragment}
+                                                        enter="transition ease-out duration-100"
+                                                        enterFrom="transform opacity-0 scale-95"
+                                                        enterTo="transform opacity-100 scale-100"
+                                                        leave="transition ease-in duration-75"
+                                                        leaveFrom="transform opacity-100 scale-100"
+                                                        leaveTo="transform opacity-0 scale-95"
+                                                    >
+                                                    <div className="absolute right-0 z-10 w-16 origin-top-right ring-1 ring-black ring-opacity-5 focus:outline-none"
+                                                         role="menu"
+                                                         aria-orientation="vertical"
+                                                         aria-labelledby="menu-button"
+                                                    >
+                                                        <Menu.Items className="py-1 text-center bg-white" >
+                                                            <Menu.Item>
+                                                                {({active})=>(
+                                                                    <p className={classNames(
+                                                                        active ? 'bg-gray-100 text-gray-900 ' : 'text-gray-700',
+                                                                        'block px-4 py-2 text-sm'
+                                                                    )}>수정</p>
+                                                                )}
+                                                            </Menu.Item>
+                                                            <Menu.Item>
+                                                                {({active})=>(
+                                                                    <p className={classNames(
+                                                                        active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                                                                        'block px-4 py-2 text-sm'
+                                                                    )}>삭제</p>
+                                                                )}
+                                                            </Menu.Item>
+                                                        </Menu.Items>
+                                                    </div>
+                                                    </Transition>
+                                                    </Menu>
+                                                </div>
+                                                <div className="font-light text-sm">
+                                                    {comment}
+                                                </div>
+                                            </div>
                                         </td>
-                                        <td className="text-center">{author}</td>
                                     </tr>))}
                                 </tbody>
                             </table>
