@@ -32,7 +32,7 @@ function PostList() {
 
     return (
         <main className="flex flex-col items-center min-h-screen p-24 mt-0">
-            <header className="w-full mb-8">
+            <header className="w-3/4 mb-8">
                 <div className="flex justify-between items-center py-4 px-8 bg-blue-500 text-white">
                     <div>
                         <Link href="/board/new-post">
@@ -44,7 +44,7 @@ function PostList() {
                     </div>
                 </div>
             </header>
-            <div className="bg-white p-8 rounded-lg shadow-md w-full">
+            <div className="bg-white p-8 rounded-lg shadow-md w-3/4">
                 {loading ? (
                     <div role="status">
                         <svg aria-hidden="true"
@@ -73,7 +73,7 @@ function PostList() {
                                 </thead>
                                 <tbody>
                                 {posts.map(({id, title,name}) => (
-                                    <tr key={id} className="border-b w-full space-y-2 ">
+                                    <tr key={id} className="border-b w-full space-y-2 hover:bg-blue-50">
                                         <td>
                                             <Link href={`/board/${id}`}>
                                                 <div className="text-blue-500 hover:underline m-4">{title}</div>

@@ -93,7 +93,7 @@ function PostView({params}:{params:{postid:string}}) {
 
     return (
         <main className="flex flex-col items-center min-h-screen p-24 mt-0">
-            <header className="w-full mb-8">
+            <header className="w-3/4 mb-8">
                 <div className="flex justify-between items-center py-4 px-8 bg-blue-500 text-white">
                     <div>
                         <Link href="/board">
@@ -105,7 +105,7 @@ function PostView({params}:{params:{postid:string}}) {
                     </div>
                 </div>
             </header>
-            <div className="bg-white p-8 rounded-lg shadow-md w-full">
+            <div className="bg-white p-8 rounded-lg shadow-md w-3/4">
                 {loading ? (
                     <div role="status">
                         <svg aria-hidden="true"

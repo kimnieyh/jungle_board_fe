@@ -46,7 +46,7 @@ function NewPost(){
 
     return(
         <main className="flex flex-col items-center min-h-screen p-24 mt-0">
-            <header className="w-full mb-8">
+            <header className="w-3/4 mb-8">
                 <div className="flex justify-between items-center py-4 px-8 bg-blue-500 text-white">
                     <div>
                         <Link href="/board">
@@ -58,7 +58,7 @@ function NewPost(){
                     </div>
                 </div>
             </header>
-            <div className="bg-white p-8 rounded-lg shadow-md w-full">
+            <div className="bg-white p-8 rounded-lg shadow-md w-3/4">
                 <form onSubmit={handleSubmit}>
                     <label htmlFor="title" className="block mb-2 text-sm font-bold text-gray-900 dark:text-white">
                         새 글 작성</label>
