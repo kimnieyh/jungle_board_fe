@@ -6,7 +6,6 @@ import {ChangeEvent, FormEvent, useEffect, useState} from "react";
 import axios from "axios";
 import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
-import { ChevronDownIcon } from '@heroicons/react/20/solid'
 // @ts-ignore
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -19,18 +18,21 @@ function PostView({params}:{params:{postid:string}}) {
         comment_id:'',
         comment:'',
         author:'',
+        commentEdit: false,
     }]);
     const [formData, setFormData] = useState({
         comment: '',
-        author: sessionStorage.getItem('id'),
+        author: typeof window !== 'undefined' ?  sessionStorage.getItem('id'): null,
         postId: params.postid,
     });
     const [heart,heartChange] = useState(false);
     const [submitted, setSubmitted] = useState(false);
     const [inputValue, setInputValue] = useState('');
+
 // todo useRef : form data input data 같은 경우에!!
     const [loading, setLoading] = useState(true);
     useEffect(() => {
+        console.log('useEffect....');
         async function fetchData(){
             try {
                 const response = await fetch(`/api/mysql/post?id=${params.postid}`);
@@ -167,7 +169,7 @@ function PostView({params}:{params:{postid:string}}) {
                         ) : (
                             <table className="table-auto w-full">
                                 <tbody>
-                                {post.map(({comment_id,comment,author}) => (
+                                {post.map(({comment_id,comment,author,commentEdit}) => (
                                     <tr key={comment_id} className="border-b w-full space-y-2 ">
                                         <td>
                                             <div className="m-4">
@@ -200,10 +202,18 @@ function PostView({params}:{params:{postid:string}}) {
                                                         <Menu.Items className="py-1 text-center bg-white" >
                                                             <Menu.Item>
                                                                 {({active})=>(
-                                                                    <p className={classNames(
+                                                                    <button onClick={() => {
+                                                                        setPost(post =>
+                                                                            post.map(item =>
+                                                                                item.comment_id === comment_id
+                                                                                    ? { ...item, commentEdit: !item.commentEdit }
+                                                                                    : item
+                                                                            )
+                                                                        );
+                                                                    }} className={classNames(
                                                                         active ? 'bg-gray-100 text-gray-900 ' : 'text-gray-700',
                                                                         'block px-4 py-2 text-sm'
-                                                                    )}>수정</p>
+                                                                    )}>수정</button>
                                                                 )}
                                                             </Menu.Item>
                                                             <Menu.Item>
@@ -219,9 +229,28 @@ function PostView({params}:{params:{postid:string}}) {
                                                     </Transition>
                                                     </Menu>
                                                 </div>
-                                                <div className="font-light text-sm">
-                                                    {comment}
-                                                </div>
+                                                {commentEdit ? (
+                                                    <form onSubmit={handleSubmit}>
+                                                        <div className="flex h-8 mb-6">
+                                                            <input
+                                                                id="comment"
+                                                                name="comment"
+                                                                value={comment}
+                                                                className="pl-4 placeholder:italic border border-slate-300 mt-1 w-full h-full rounded-lg"
+                                                                type="text"
+                                                                placeholder="댓글을 입력하세요"
+                                                            />
+                                                            <button
+                                                                type="submit"
+                                                                className="h-full w-1/6 text-center text-sm bg-blue-800 ml-3 rounded-lg mt-1 font-bold text-white"
+                                                            >수정</button>
+                                                        </div>
+                                                    </form>
+                                                ):(
+                                                    <div className="font-light text-sm">
+                                                        {comment}
+                                                    </div>
+                                                )}
                                             </div>
                                         </td>
                                     </tr>))}
