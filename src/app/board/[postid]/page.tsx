@@ -55,7 +55,7 @@ function PostView({params}:{params:{postid:string}}) {
         setSubmitted(false);
         try {
             const response = await axios
-                .delete('/api/mysql/post',{
+                .delete('/api/mysql/comment',{
                     data : {
                         commentId: comment_id
                     }
@@ -73,7 +73,29 @@ function PostView({params}:{params:{postid:string}}) {
         const {name,value} = e.target;
         setFormData({...formData,[name]:value});
     }
-
+    const handleCommentSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setSubmitted(false);
+        try {
+            let data = {
+                commentId: '',
+                comment: '',
+            };
+            post.map(({commentEdit,comment_id,comment})=>{
+                if(commentEdit){
+                    data.commentId = comment_id;
+                    data.comment = comment;
+                }
+            })
+            const response = await axios
+                .put('/api/mysql/comment',data)
+                .then((res)=>{
+                    setSubmitted(true);
+                })
+        }catch (e) {
+            console.error('Error:',e);
+        }
+    }
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setSubmitted(false);
@@ -206,8 +228,8 @@ function PostView({params}:{params:{postid:string}}) {
                                                                         setPost(post =>
                                                                             post.map(item =>
                                                                                 item.comment_id === comment_id
-                                                                                    ? { ...item, commentEdit: !item.commentEdit }
-                                                                                    : item
+                                                                                    ? { ...item, commentEdit: true }
+                                                                                    : { ...item, commentEdit: false}
                                                                             )
                                                                         );
                                                                     }} className={classNames(
@@ -230,11 +252,17 @@ function PostView({params}:{params:{postid:string}}) {
                                                     </Menu>
                                                 </div>
                                                 {commentEdit ? (
-                                                    <form onSubmit={handleSubmit}>
+                                                    <form onSubmit={handleCommentSubmit}>
                                                         <div className="flex h-8 mb-6">
                                                             <input
                                                                 id="comment"
                                                                 name="comment"
+                                                                onChange={(e)=>{
+                                                                    setPost(post=>
+                                                                    post.map(item=>
+                                                                    item.comment_id === comment_id
+                                                                    ? {...item, comment: e.target.value}: item));
+                                                                }}
                                                                 value={comment}
                                                                 className="pl-4 placeholder:italic border border-slate-300 mt-1 w-full h-full rounded-lg"
                                                                 type="text"
