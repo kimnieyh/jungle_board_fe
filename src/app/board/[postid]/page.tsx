@@ -17,12 +17,13 @@ function PostView({params}:{params:{postid:string}}) {
         content:'',
         comment_id:'',
         comment:'',
-        author:'',
+        comment_author:'',
+        post_author:'',
         commentEdit: false,
     }]);
     const [formData, setFormData] = useState({
         comment: '',
-        author: typeof window !== 'undefined' ?  sessionStorage.getItem('id'): null,
+        comment_author: typeof window !== 'undefined' ?  sessionStorage.getItem('id'): null,
         postId: params.postid,
     });
     const [heart,heartChange] = useState(false);
@@ -50,6 +51,27 @@ function PostView({params}:{params:{postid:string}}) {
     function logout() {
         sessionStorage.setItem('id','');
         router.push('/');
+    }
+    const removePost = async ()=>{
+        setSubmitted(false);
+        try {
+            const response = await axios
+                .delete('/api/mysql/post',{
+                    data: {
+                        post_id:params.postid,
+                    }
+                })
+                .then((res)=>{
+                    alert('삭제되었습니다.');
+                    router.push('/board');
+                })
+        }catch (e){
+            console.error('Error:',e);
+        }
+    }
+
+    const editPost = async () => {
+
     }
     const removeComment = async (comment_id : string) =>{
         setSubmitted(false);
@@ -146,6 +168,54 @@ function PostView({params}:{params:{postid:string}}) {
                     </div>
                 ): (
                     <>
+                        <div className="flex mb-3">
+                            <div className="font-bold w-full">
+                                {post[0].post_author}
+                            </div>
+                            <Menu as="div" className="relative inline-block text-left">
+                                <Menu.Button type="button" id="menu-button" aria-expanded="true" aria-haspopup="true">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="h-5 w-5 text-gray-400">
+                                        <circle cx="8" cy="12" r="1.5" />
+                                        <circle cx="14" cy="12" r="1.5" />
+                                        <circle cx="20" cy="12" r="1.5" />
+                                    </svg>
+                                </Menu.Button>
+                                <Transition
+                                    as={Fragment}
+                                    enter="transition ease-out duration-100"
+                                    enterFrom="transform opacity-0 scale-95"
+                                    enterTo="transform opacity-100 scale-100"
+                                    leave="transition ease-in duration-75"
+                                    leaveFrom="transform opacity-100 scale-100"
+                                    leaveTo="transform opacity-0 scale-95"
+                                >
+                                    <div className="absolute right-0 z-10 w-16 origin-top-right ring-1 ring-black ring-opacity-5 focus:outline-none"
+                                         role="menu"
+                                         aria-orientation="vertical"
+                                         aria-labelledby="menu-button"
+                                    >
+                                        <Menu.Items className="text-center bg-white" >
+                                            <Menu.Item>
+                                                {({active})=>(
+                                                    <button onClick={editPost} className={classNames(
+                                                        active ? 'bg-gray-100 text-gray-900 ' : 'text-gray-700',
+                                                        'block w-full py-2 text-sm'
+                                                    )}>수정</button>
+                                                )}
+                                            </Menu.Item>
+                                            <Menu.Item>
+                                                {({active})=>(
+                                                    <button onClick={removePost} className={classNames(
+                                                        active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                                                        'block w-full py-2 text-sm'
+                                                    )}>삭제</button>
+                                                )}
+                                            </Menu.Item>
+                                        </Menu.Items>
+                                    </div>
+                                </Transition>
+                            </Menu>
+                        </div>
                         <div
                             id="title"
                             className="mb-2 block w-full border-0 py-1.5 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6">
@@ -191,13 +261,13 @@ function PostView({params}:{params:{postid:string}}) {
                         ) : (
                             <table className="table-auto w-full">
                                 <tbody>
-                                {post.map(({comment_id,comment,author,commentEdit}) => (
+                                {post.map(({comment_id,comment,comment_author,commentEdit}) => (
                                     <tr key={comment_id} className="border-b w-full space-y-2 ">
                                         <td>
                                             <div className="m-4">
                                                 <div className="flex">
                                                     <div className="font-bold w-full">
-                                                        {author}
+                                                        {comment_author}
                                                     </div>
                                                     <Menu as="div" className="relative inline-block text-left">
                                                         <Menu.Button type="button" id="menu-button" aria-expanded="true" aria-haspopup="true">
