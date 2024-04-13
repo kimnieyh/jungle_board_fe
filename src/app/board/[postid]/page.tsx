@@ -144,11 +144,10 @@ function PostView({params}:{params:{postid:string}}) {
     return (
         <main className="flex flex-col items-center min-h-screen p-24 mt-0">
             <header className="w-3/4 mb-8">
-                <div className="flex justify-between items-center py-4 px-8 bg-blue-500 text-white">
-                    <div>
-                        <Link href="/board">
-                            <div className="text-lg font-bold hover:underline">글 목록</div>
-                        </Link>
+                <div className="flex justify-between items-center py-4 px-8 bg-gradient-to-r from-purple-500 to-pink-500 text-white">
+                    <div>                        <Link href="/board">
+                        <div className="text-lg font-bold hover:underline">글 목록</div>
+                    </Link>
                     </div>
                     <div>
                         <button onClick={logout} className="text-lg font-bold hover:underline">로그아웃</button>
@@ -156,6 +155,7 @@ function PostView({params}:{params:{postid:string}}) {
                 </div>
             </header>
             <div className="bg-white p-8 rounded-lg shadow-md w-3/4">
+
                 {loading ? (
                     <div role="status">
                         <svg aria-hidden="true"
@@ -259,7 +259,7 @@ function PostView({params}:{params:{postid:string}}) {
                             />
                             <button
                                 type="submit"
-                                className="h-full w-1/6 text-center text-sm bg-blue-500 ml-3 rounded-lg mt-5 font-bold text-white"
+                                className="h-full w-1/6 text-center text-sm bg-gradient-to-r from-purple-500 to-pink-500 ml-3 rounded-lg mt-5 font-bold text-white"
                             >작성</button>
                         </div>
                         </form>

@@ -33,13 +33,18 @@ function PostList() {
     return (
         <main className="flex flex-col items-center min-h-screen p-24 mt-0">
             <header className="w-3/4 mb-8">
-                <div className="flex justify-between items-center py-4 px-8 bg-blue-500 text-white">
-                    <div>
+                <div className="flex justify-between items-center py-4 px-8 bg-gradient-to-r from-purple-500 to-pink-500 text-white">
+                    <div className="w-20">
                         <Link href="/board/new-post">
                             <div className="text-lg font-bold hover:underline">글 작성</div>
                         </Link>
                     </div>
-                    <div>
+                    <div className="w-14">
+                        <Link href="/chat">
+                            <div className="text-lg font-bold hover:underline">채팅</div>
+                        </Link>
+                    </div>
+                    <div className="w-full text-end">
                         <button onClick={logout} className="text-lg font-bold hover:underline">로그아웃</button>
                     </div>
                 </div>
@@ -73,10 +78,10 @@ function PostList() {
                                 </thead>
                                 <tbody>
                                 {posts.map(({id, title,name}) => (
-                                    <tr key={id} className="border-b w-full space-y-2 hover:bg-blue-50">
+                                    <tr key={id} className="border-b w-full space-y-2 hover:bg-gray-50">
                                         <td>
                                             <Link href={`/board/${id}`}>
-                                                <div className="text-blue-500 hover:underline m-4">{title}</div>
+                                                <div className="text-black hover:underline m-4">{title}</div>
                                             </Link>
                                         </td>
                                         <td className="text-center">{name}</td>

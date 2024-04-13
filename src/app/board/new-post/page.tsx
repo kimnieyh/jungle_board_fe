@@ -47,7 +47,7 @@ function NewPost(){
     return(
         <main className="flex flex-col items-center min-h-screen p-24 mt-0">
             <header className="w-3/4 mb-8">
-                <div className="flex justify-between items-center py-4 px-8 bg-blue-500 text-white">
+                <div className="flex justify-between items-center py-4 px-8 bg-gradient-to-r from-purple-500 to-pink-500 text-white">
                     <div>
                         <Link href="/board">
                             <div className="text-lg font-bold hover:underline">글 목록</div>
@@ -75,7 +75,7 @@ function NewPost(){
                               className="resize-none h-56 block p-2.5 pl-4 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                               placeholder="내용을 입력해 주세요"></textarea>
                     <div className="text-end">
-                        <button type="submit" className="rounded-full bg-blue-500 h-12 w-20 text-white font-bold mt-3">저장</button>
+                        <button type="submit" className="rounded-full bg-gradient-to-r from-purple-500 to-pink-500 h-12 w-20 text-white font-bold mt-3">저장</button>
                     </div>
                 </form>
             </div>

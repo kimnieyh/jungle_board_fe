@@ -55,7 +55,7 @@ export default function Page() {
                         <input onChange={handleChange} id="password" name="password" type="password" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" />
                     </div>
                     <div className="flex justify-between items-center">
-                        <button type="submit" className="w-9/12 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">회원가입</button>
+                        <button type="submit" className="w-9/12 bg-gradient-to-r from-purple-500 to-pink-500 text-white py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">회원가입</button>
                         <Link href={'/'}>
                         <button type="button" className="text-blue-500 hover:underline">취소</button>
                         </Link>
