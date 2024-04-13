@@ -19,6 +19,8 @@ function PostView({params}:{params:{postid:string}}) {
         comment:'',
         comment_author:'',
         post_author:'',
+        post_author_id:'',
+        comment_author_id:'',
         commentEdit: false,
     }]);
     const [formData, setFormData] = useState({
@@ -42,10 +44,12 @@ function PostView({params}:{params:{postid:string}}) {
             }catch (error) {
                 console.error('Error fetching data:',error);
             } finally {
+                console.log(post[0])
                 setLoading(false);
             }
         }
         fetchData();
+
     },[submitted,heart]);
 
     function logout() {
@@ -123,7 +127,7 @@ function PostView({params}:{params:{postid:string}}) {
         setSubmitted(false);
         try {
             const response = await axios
-                .post('/api/mysql/post',formData)
+                .post('/api/mysql/comment',formData)
                 .then((res)=> {
                     console.log('res:',res);
                     if("affectedRows" in res.data){
@@ -172,49 +176,52 @@ function PostView({params}:{params:{postid:string}}) {
                             <div className="font-bold w-full">
                                 {post[0].post_author}
                             </div>
-                            <Menu as="div" className="relative inline-block text-left">
-                                <Menu.Button type="button" id="menu-button" aria-expanded="true" aria-haspopup="true">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="h-5 w-5 text-gray-400">
-                                        <circle cx="8" cy="12" r="1.5" />
-                                        <circle cx="14" cy="12" r="1.5" />
-                                        <circle cx="20" cy="12" r="1.5" />
-                                    </svg>
-                                </Menu.Button>
-                                <Transition
-                                    as={Fragment}
-                                    enter="transition ease-out duration-100"
-                                    enterFrom="transform opacity-0 scale-95"
-                                    enterTo="transform opacity-100 scale-100"
-                                    leave="transition ease-in duration-75"
-                                    leaveFrom="transform opacity-100 scale-100"
-                                    leaveTo="transform opacity-0 scale-95"
-                                >
-                                    <div className="absolute right-0 z-10 w-16 origin-top-right ring-1 ring-black ring-opacity-5 focus:outline-none"
-                                         role="menu"
-                                         aria-orientation="vertical"
-                                         aria-labelledby="menu-button"
-                                    >
-                                        <Menu.Items className="text-center bg-white" >
-                                            <Menu.Item>
-                                                {({active})=>(
-                                                    <button onClick={editPost} className={classNames(
-                                                        active ? 'bg-gray-100 text-gray-900 ' : 'text-gray-700',
-                                                        'block w-full py-2 text-sm'
-                                                    )}>수정</button>
-                                                )}
-                                            </Menu.Item>
-                                            <Menu.Item>
-                                                {({active})=>(
-                                                    <button onClick={removePost} className={classNames(
-                                                        active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                                        'block w-full py-2 text-sm'
-                                                    )}>삭제</button>
-                                                )}
-                                            </Menu.Item>
-                                        </Menu.Items>
-                                    </div>
-                                </Transition>
-                            </Menu>
+                            {(post[0].post_author_id.toString() === sessionStorage.getItem('id')) ?
+                                (<Menu as="div" className="relative inline-block text-left">
+                                        <Menu.Button type="button" id="menu-button" aria-expanded="true" aria-haspopup="true">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="h-5 w-5 text-gray-400">
+                                                <circle cx="8" cy="12" r="1.5" />
+                                                <circle cx="14" cy="12" r="1.5" />
+                                                <circle cx="20" cy="12" r="1.5" />
+                                            </svg>
+                                        </Menu.Button>
+                                        <Transition
+                                            as={Fragment}
+                                            enter="transition ease-out duration-100"
+                                            enterFrom="transform opacity-0 scale-95"
+                                            enterTo="transform opacity-100 scale-100"
+                                            leave="transition ease-in duration-75"
+                                            leaveFrom="transform opacity-100 scale-100"
+                                            leaveTo="transform opacity-0 scale-95"
+                                        >
+                                            <div className="absolute right-0 z-10 w-16 origin-top-right ring-1 ring-black ring-opacity-5 focus:outline-none"
+                                                 role="menu"
+                                                 aria-orientation="vertical"
+                                                 aria-labelledby="menu-button"
+                                            >
+                                                <Menu.Items className="text-center bg-white" >
+                                                    <Menu.Item>
+                                                        {({active})=>(
+                                                            <button onClick={editPost} className={classNames(
+                                                                active ? 'bg-gray-100 text-gray-900 ' : 'text-gray-700',
+                                                                'block w-full py-2 text-sm'
+                                                            )}>수정</button>
+                                                        )}
+                                                    </Menu.Item>
+                                                    <Menu.Item>
+                                                        {({active})=>(
+                                                            <button onClick={removePost} className={classNames(
+                                                                active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                                                                'block w-full py-2 text-sm'
+                                                            )}>삭제</button>
+                                                        )}
+                                                    </Menu.Item>
+                                                </Menu.Items>
+                                            </div>
+                                        </Transition>
+                                    </Menu>
+                               ) : (<></>)}
+
                         </div>
                         <div
                             id="title"
