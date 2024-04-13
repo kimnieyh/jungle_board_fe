@@ -268,7 +268,7 @@ function PostView({params}:{params:{postid:string}}) {
                         ) : (
                             <table className="table-auto w-full">
                                 <tbody>
-                                {post.map(({comment_id,comment,comment_author,commentEdit}) => (
+                                {post.map(({comment_id,comment,comment_author,commentEdit,comment_author_id}) => (
                                     <tr key={comment_id} className="border-b w-full space-y-2 ">
                                         <td>
                                             <div className="m-4">
@@ -276,57 +276,61 @@ function PostView({params}:{params:{postid:string}}) {
                                                     <div className="font-bold w-full">
                                                         {comment_author}
                                                     </div>
-                                                    <Menu as="div" className="relative inline-block text-left">
-                                                        <Menu.Button type="button" id="menu-button" aria-expanded="true" aria-haspopup="true">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="h-5 w-5 text-gray-400">
-                                                                <circle cx="12" cy="6" r="1.5" />
-                                                                <circle cx="12" cy="12" r="1.5" />
-                                                                <circle cx="12" cy="18" r="1.5" />
-                                                            </svg>
-                                                        </Menu.Button>
-                                                        <Transition
-                                                            as={Fragment}
-                                                            enter="transition ease-out duration-100"
-                                                            enterFrom="transform opacity-0 scale-95"
-                                                            enterTo="transform opacity-100 scale-100"
-                                                            leave="transition ease-in duration-75"
-                                                            leaveFrom="transform opacity-100 scale-100"
-                                                            leaveTo="transform opacity-0 scale-95"
-                                                        >
-                                                        <div className="absolute right-0 z-10 w-16 origin-top-right ring-1 ring-black ring-opacity-5 focus:outline-none"
-                                                             role="menu"
-                                                             aria-orientation="vertical"
-                                                             aria-labelledby="menu-button"
-                                                        >
-                                                            <Menu.Items className="text-center bg-white" >
-                                                                <Menu.Item>
-                                                                    {({active})=>(
-                                                                        <button onClick={() => {
-                                                                            setPost(post =>
-                                                                                post.map(item =>
-                                                                                    item.comment_id === comment_id
-                                                                                        ? { ...item, commentEdit: true }
-                                                                                        : { ...item, commentEdit: false}
-                                                                                )
-                                                                            );
-                                                                        }} className={classNames(
-                                                                            active ? 'bg-gray-100 text-gray-900 ' : 'text-gray-700',
-                                                                            'block w-full py-2 text-sm'
-                                                                        )}>수정</button>
-                                                                    )}
-                                                                </Menu.Item>
-                                                                <Menu.Item>
-                                                                    {({active})=>(
-                                                                        <button onClick={() => removeComment(comment_id)} className={classNames(
-                                                                            active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                                                            'block w-full py-2 text-sm'
-                                                                        )}>삭제</button>
-                                                                    )}
-                                                                </Menu.Item>
-                                                            </Menu.Items>
-                                                        </div>
-                                                        </Transition>
-                                                    </Menu>
+                                                    {(comment_author_id.toString() === sessionStorage.getItem('id'))? (
+                                                            <Menu as="div" className="relative inline-block text-left">
+                                                                <Menu.Button type="button" id="menu-button" aria-expanded="true" aria-haspopup="true">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="h-5 w-5 text-gray-400">
+                                                                        <circle cx="12" cy="6" r="1.5" />
+                                                                        <circle cx="12" cy="12" r="1.5" />
+                                                                        <circle cx="12" cy="18" r="1.5" />
+                                                                    </svg>
+                                                                </Menu.Button>
+                                                                <Transition
+                                                                    as={Fragment}
+                                                                    enter="transition ease-out duration-100"
+                                                                    enterFrom="transform opacity-0 scale-95"
+                                                                    enterTo="transform opacity-100 scale-100"
+                                                                    leave="transition ease-in duration-75"
+                                                                    leaveFrom="transform opacity-100 scale-100"
+                                                                    leaveTo="transform opacity-0 scale-95"
+                                                                >
+                                                                    <div className="absolute right-0 z-10 w-16 origin-top-right ring-1 ring-black ring-opacity-5 focus:outline-none"
+                                                                         role="menu"
+                                                                         aria-orientation="vertical"
+                                                                         aria-labelledby="menu-button"
+                                                                    >
+                                                                        <Menu.Items className="text-center bg-white" >
+                                                                            <Menu.Item>
+                                                                                {({active})=>(
+                                                                                    <button onClick={() => {
+                                                                                        setPost(post =>
+                                                                                            post.map(item =>
+                                                                                                item.comment_id === comment_id
+                                                                                                    ? { ...item, commentEdit: true }
+                                                                                                    : { ...item, commentEdit: false}
+                                                                                            )
+                                                                                        );
+                                                                                    }} className={classNames(
+                                                                                        active ? 'bg-gray-100 text-gray-900 ' : 'text-gray-700',
+                                                                                        'block w-full py-2 text-sm'
+                                                                                    )}>수정</button>
+                                                                                )}
+                                                                            </Menu.Item>
+                                                                            <Menu.Item>
+                                                                                {({active})=>(
+                                                                                    <button onClick={() => removeComment(comment_id)} className={classNames(
+                                                                                        active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                                                                                        'block w-full py-2 text-sm'
+                                                                                    )}>삭제</button>
+                                                                                )}
+                                                                            </Menu.Item>
+                                                                        </Menu.Items>
+                                                                    </div>
+                                                                </Transition>
+                                                            </Menu>
+                                                    )
+                                                        : (<></>)}
+
                                                 </div>
                                                 {commentEdit ? (
                                                     <form onSubmit={handleCommentSubmit}>
