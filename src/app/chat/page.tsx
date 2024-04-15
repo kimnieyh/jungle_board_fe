@@ -46,6 +46,7 @@ export default function Page(){
     useEffect(() => {
         // 현재 스크롤 위치 === scrollRef.current.scrollTop
         // 스크롤 길이 === scrollRef.current.scrollHeight
+        // @ts-ignore
         scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     });
 

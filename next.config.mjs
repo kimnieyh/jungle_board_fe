@@ -3,7 +3,7 @@ const nextConfig = {experimental: {
 
     },
     env: {
-        host : "localhost",
+        host : "54.180.124.141",
         port : "3306",
         user : "root",
         password : "1234",
