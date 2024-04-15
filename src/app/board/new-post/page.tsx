@@ -13,7 +13,7 @@ function NewPost(){
     const [formData, setFormData] = useState({
         title: '',
         content: '',
-        author: sessionStorage.getItem('id'),
+        author: typeof window !== 'undefined' ?  sessionStorage.getItem('id'): null,
     });
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const {name,value} = e.target;

@@ -176,7 +176,7 @@ function PostView({params}:{params:{postid:string}}) {
                             <div className="font-bold w-full">
                                 {post[0].post_author}
                             </div>
-                            {(post[0].post_author_id.toString() === sessionStorage.getItem('id')) ?
+                            {(post[0].post_author_id.toString() === (typeof window !== 'undefined' ?  sessionStorage.getItem('id'): null)) ?
                                 (<Menu as="div" className="relative inline-block text-left">
                                         <Menu.Button type="button" id="menu-button" aria-expanded="true" aria-haspopup="true">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="h-5 w-5 text-gray-400">
@@ -276,7 +276,7 @@ function PostView({params}:{params:{postid:string}}) {
                                                     <div className="font-bold w-full">
                                                         {comment_author}
                                                     </div>
-                                                    {(comment_author_id.toString() === sessionStorage.getItem('id'))? (
+                                                    {(comment_author_id.toString() === (typeof window !== 'undefined' ?  sessionStorage.getItem('id'): null))? (
                                                             <Menu as="div" className="relative inline-block text-left">
                                                                 <Menu.Button type="button" id="menu-button" aria-expanded="true" aria-haspopup="true">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="h-5 w-5 text-gray-400">

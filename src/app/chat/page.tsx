@@ -30,7 +30,9 @@ export default function Page(){
     useEffect(()=>{
         async function dataFetch(){
             try{
-                const response = await axios.post('/api', { id: sessionStorage.getItem('id') });
+                const response = await axios.post('/api', {
+                    id: typeof window !== 'undefined' ?  sessionStorage.getItem('id'): null
+                });
                 nameSet(response.data[0].name);
             }catch (error) {
                 console.error('Error getName:', error);

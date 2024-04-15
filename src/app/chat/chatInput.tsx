@@ -9,7 +9,9 @@ const ChatInput= () =>{
 
     async function getName(): Promise<string> {
         try {
-            const response = await axios.post('/api', { id: sessionStorage.getItem('id') });
+            const response = await axios.post('/api', {
+                id: typeof window !== 'undefined' ?  sessionStorage.getItem('id'): null
+            });
             return response.data[0].name;
         } catch (error) {
             console.error('Error getName:', error);
