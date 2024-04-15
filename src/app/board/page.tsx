@@ -32,7 +32,7 @@ function PostList() {
 
     return (
         <main className="flex flex-col items-center min-h-screen p-24 mt-0">
-            <header className="w-3/4 mb-8">
+            <header className="w-3/4 min-w-96 mb-8">
                 <div className="flex justify-between items-center py-4 px-8 bg-gradient-to-r from-purple-500 to-pink-500 text-white">
                     <div className="w-20">
                         <Link href="/board/new-post">
@@ -49,7 +49,7 @@ function PostList() {
                     </div>
                 </div>
             </header>
-            <div className="bg-white p-8 rounded-lg shadow-md w-3/4">
+            <div className="bg-white p-8 rounded-lg min-w-96 shadow-md w-3/4">
                 {loading ? (
                     <div role="status">
                         <svg aria-hidden="true"
