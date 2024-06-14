@@ -1,38 +1,33 @@
 import mysql from "mysql2/promise";
-import {NextResponse} from "next/server";
+import { NextResponse } from "next/server";
+import { config } from 'dotenv';
+
+config(); // 환경 변수 로드
 
 export interface IDBSettings {
-    host : string,
-    port : number,
-    user : string,
-    password : string,
-    database : string,
+    host: string,
+    port: number,
+    user: string,
+    password: string,
+    database: string,
 }
 
-export const GetDBSettings = () : IDBSettings => {
+export const GetDBSettings = (): IDBSettings => {
     const env = process.env.NODE_ENV;
-    //todo 개발용 db와 배포용 db가 달라진다면, 수정 필요
-    if(env == 'development')
-        return {
-            host: process.env.host!, //!를 넣어서 어떠한 변수도 null이 아님을 명시
-            port: parseInt(process.env.port!),
-            user: process.env.user!,
-            password: process.env.password!,
-            database: process.env.database!,
-        }
-    else {
-        return {
-            host: process.env.host!,
-            port: parseInt(process.env.port!),
-            user: process.env.user!,
-            password: process.env.password!,
-            database: process.env.database!,
-        }
-    }
+    const settings = {
+        host: process.env.HOST!,
+        port: parseInt(process.env.MYSQL_PORT!, 10),
+        user: process.env.USER!,
+        password: process.env.PASSWORD!,
+        database: process.env.DATABASE!,
+    };
+    console.log('settings:',settings);
+    return settings;
 }
 
 // 1. populate the connection parameters
 let connectionParams = GetDBSettings();
+
 export async function executeQuery(query: string, values: any[]) {
     try {
         // 데이터베이스 연결
@@ -50,8 +45,20 @@ export async function executeQuery(query: string, values: any[]) {
         throw e;
     }
 }
+const testDBConnection = async () => {
+    try {
+        const connectionParams = GetDBSettings();
+        const connection = await mysql.createConnection(connectionParams);
+        console.log('Connected to the database');
+        await connection.end();
+    } catch (e) {
+        console.error('Database connection failed:', (e as Error).message);
+    }
+};
 
-export function validateError () {
+testDBConnection();
+
+export function validateError() {
     console.log('validate Error');
 
     const response = {
@@ -59,26 +66,29 @@ export function validateError () {
         returnedStatus: 200,
     }
 
-    return NextResponse.json(response,{status : 200});
+    return NextResponse.json(response, { status: 200 });
 }
 
-export async function checkDuplicateId(id :string){
+export async function checkDuplicateId(id: string) {
     try {
         const result = await executeQuery(
-            "SELECT * FROM jungle_board.member WHERE user_id = ? ",[id,]);
+            "SELECT * FROM jungle_board.member WHERE user_id = ? ", [id]
+        );
         return !(Array.isArray(result) && result.length === 0);
-    }catch (e){
+    } catch (e) {
         const response = {
             error: (e as Error).message,
             returnedStatus: 200,
         }
-        return NextResponse.json(response,{status : 200});
+        console.log(response);
+        return NextResponse.json(response, { status: 200 });
     }
 }
-export function sendMessageResponse(message:string){
+
+export function sendMessageResponse(message: string) {
     const response = {
-        message: message ,
+        message: message,
         returnedStatus: 200,
     }
-    return NextResponse.json(response,{status:200})
+    return NextResponse.json(response, { status: 200 });
 }

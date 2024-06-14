@@ -1,13 +1,17 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {experimental: {
+import { config } from 'dotenv';
 
-    },
+config();
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+    experimental: {},
     env: {
-        host : "54.180.124.141",
-        port : "3306",
-        user : "root",
-        password : "1234",
-        database : "jungle_board",
-    }
+        host: process.env.HOST,
+        mysql_port: process.env.MYSQL_PORT,
+        user: process.env.USER,
+        password: process.env.PASSWORD,
+        database: process.env.DATABASE,
+    },
 };
+
 export default nextConfig;
